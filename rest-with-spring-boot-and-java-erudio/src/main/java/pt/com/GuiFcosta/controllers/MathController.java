@@ -3,28 +3,60 @@ package pt.com.GuiFcosta.controllers;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pt.com.GuiFcosta.exception.UnsupportedMathOperationException;
+import pt.com.GuiFcosta.math.SimpleMath;
+import pt.com.GuiFcosta.request.converters.NumberConverter;
 
 @RestController
 @RequestMapping ("/math")
 public class MathController {
+    private final SimpleMath math = new SimpleMath();
+
     // http://localhost:8080/math/sum/3/5
     @RequestMapping("/sum/{a}/{b}")
     public Double sum(@PathVariable("a") String a, @PathVariable("b") String b) throws Exception{
-        if(isNumeric(a) || isNumeric(b)){
-            throw  new Exception("Invalid input");
+        isValid(a, b);
+        return math.sum(NumberConverter.convertToDouble(a), NumberConverter.convertToDouble(b));
+    }
+
+    // http://localhost:8080/math/sub/3/5
+    @RequestMapping("/sub/{a}/{b}")
+    public Double sub(@PathVariable("a") String a, @PathVariable("b") String b) throws Exception{
+        isValid(a, b);
+        return math.sub(NumberConverter.convertToDouble(a), NumberConverter.convertToDouble(b));    }
+
+    // http://localhost:8080/math/mul/3/5
+    @RequestMapping("/mul/{a}/{b}")
+    public Double mul(@PathVariable("a") String a, @PathVariable("b") String b) throws Exception{
+        isValid(a, b);
+        return math.mul(NumberConverter.convertToDouble(a), NumberConverter.convertToDouble(b));    }
+
+    // http://localhost:8080/math/div/3/5
+    @RequestMapping("/div/{a}/{b}")
+    public Double div(@PathVariable("a") String a, @PathVariable("b") String b) throws Exception{
+        isValid(a, b);
+        if(NumberConverter.convertToDouble(b) == 0){
+            throw new UnsupportedMathOperationException("Division by zero");
         }
-        return convertToDouble(a) + convertToDouble(b);
-    }
+        return math.div(NumberConverter.convertToDouble(a), NumberConverter.convertToDouble(b));    }
 
-    private Double convertToDouble(String strNumber) throws IllegalArgumentException {
-        if (strNumber == null || strNumber.isEmpty()) throw new IllegalArgumentException();
-        String number = strNumber.replace(",", ".");
-        return Double.parseDouble(number);
-    }
+    // http://localhost:8080/math/mean/3/5
+    @RequestMapping("/mean/{a}/{b}")
+    public Double mean(@PathVariable("a") String a, @PathVariable("b") String b) throws Exception{
+        isValid(a, b);
+        return math.mean(NumberConverter.convertToDouble(a), NumberConverter.convertToDouble(b));    }
 
-    public static boolean isNumeric(String strNumber){
-        if (strNumber == null || strNumber.isEmpty()) return true;
-        String number = strNumber.replace(",", ".");
-        return !number.matches("[-+]?[0-9]*\\.?[0-9]+");
+    // http://localhost:8080/math/squareRoot/3/5
+    @RequestMapping("/squareRoot/{a}")
+    public Double squareRoot(@PathVariable("a") String a) throws Exception{
+        if(NumberConverter.isNumeric(a)){
+            throw new UnsupportedMathOperationException("Please set a numeric value");
+        }
+        return math.squareRoot(NumberConverter.convertToDouble(a));    }
+
+    public void isValid(String a, String b) throws Exception{
+        if(NumberConverter.isNumeric(a) || NumberConverter.isNumeric(b)){
+            throw new UnsupportedMathOperationException("Please set a numeric value");
+        }
     }
 }
