@@ -3,7 +3,7 @@ package pt.com.GuiFcosta.controllers;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pt.com.GuiFcosta.exception.UnsupportedMathOperationException;
+import pt.com.GuiFcosta.exception.ResourceNotFoundException;
 import pt.com.GuiFcosta.math.SimpleMath;
 import pt.com.GuiFcosta.request.converters.NumberConverter;
 
@@ -36,7 +36,7 @@ public class MathController {
     public Double div(@PathVariable("a") String a, @PathVariable("b") String b) throws Exception{
         isValid(a, b);
         if(NumberConverter.convertToDouble(b) == 0){
-            throw new UnsupportedMathOperationException("Division by zero");
+            throw new ResourceNotFoundException("Division by zero");
         }
         return math.div(NumberConverter.convertToDouble(a), NumberConverter.convertToDouble(b));    }
 
@@ -50,13 +50,13 @@ public class MathController {
     @RequestMapping("/squareRoot/{a}")
     public Double squareRoot(@PathVariable("a") String a) throws Exception{
         if(NumberConverter.isNumeric(a)){
-            throw new UnsupportedMathOperationException("Please set a numeric value");
+            throw new ResourceNotFoundException("Please set a numeric value");
         }
         return math.squareRoot(NumberConverter.convertToDouble(a));    }
 
     public void isValid(String a, String b) throws Exception{
         if(NumberConverter.isNumeric(a) || NumberConverter.isNumeric(b)){
-            throw new UnsupportedMathOperationException("Please set a numeric value");
+            throw new ResourceNotFoundException("Please set a numeric value");
         }
     }
 }

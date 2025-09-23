@@ -2,7 +2,7 @@ package pt.com.GuiFcosta.math;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pt.com.GuiFcosta.exception.UnsupportedMathOperationException;
+import pt.com.GuiFcosta.exception.ResourceNotFoundException;
 
 public class SimpleMath {
     public Double sum(Double a, Double b){
