@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pt.com.GuiFcosta.model.Person;
+import pt.com.GuiFcosta.data.dto.v1.PersonDTO;
+import pt.com.GuiFcosta.data.dto.v2.PersonDTOv2;
 import pt.com.GuiFcosta.service.PersonServices;
 
 import java.util.List;
@@ -14,10 +15,9 @@ import java.util.List;
 public class PersonController {
     @Autowired
     private PersonServices services;
-    // private PersonServices services = new PersonServices();
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         return services.findAll();
     }
 
@@ -25,7 +25,7 @@ public class PersonController {
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Person findById(@PathVariable("id") Long id) {
+    public PersonDTO findById(@PathVariable("id") Long id) {
         return services.findById(id);
     }
 
@@ -33,15 +33,24 @@ public class PersonController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Person create(@RequestBody Person person) {
+    public PersonDTO create(@RequestBody PersonDTO person) {
         return services.create(person);
+    }
+
+    @PostMapping(
+            value = "/v2",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public PersonDTOv2 create(@RequestBody PersonDTOv2 person) {
+        return services.createV2(person);
     }
 
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Person update(@RequestBody Person person) {
+    public PersonDTO update(@RequestBody PersonDTO person) {
         return services.update(person);
     }
 
