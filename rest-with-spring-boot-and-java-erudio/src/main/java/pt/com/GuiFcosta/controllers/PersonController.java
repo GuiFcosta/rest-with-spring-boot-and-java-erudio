@@ -11,7 +11,7 @@ import pt.com.GuiFcosta.service.PersonServices;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/person/v1")
 public class PersonController {
     @Autowired
     private PersonServices services;
@@ -35,15 +35,6 @@ public class PersonController {
     )
     public PersonDTO create(@RequestBody PersonDTO person) {
         return services.create(person);
-    }
-
-    @PostMapping(
-            value = "/v2",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public PersonDTOv2 create(@RequestBody PersonDTOv2 person) {
-        return services.createV2(person);
     }
 
     @PutMapping(

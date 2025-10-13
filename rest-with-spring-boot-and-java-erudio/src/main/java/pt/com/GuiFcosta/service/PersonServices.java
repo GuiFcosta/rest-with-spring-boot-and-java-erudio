@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.com.GuiFcosta.data.dto.v1.PersonDTO;
-import pt.com.GuiFcosta.data.dto.v2.PersonDTOv2;
 import pt.com.GuiFcosta.exception.ResourceNotFoundException;
 import pt.com.GuiFcosta.mapper.custom.PersonMapper;
 import pt.com.GuiFcosta.model.Person;
@@ -29,7 +28,6 @@ public class PersonServices {
     @Autowired
     PersonMapper converter;
 
-
     public List<PersonDTO> findAll() {
 
         logger.info("Finding all People!");
@@ -50,14 +48,6 @@ public class PersonServices {
         var entity = parseObject(person, Person.class);
 
         return parseObject(repository.save(entity), PersonDTO.class);
-    }
-
-    public PersonDTOv2 createV2(PersonDTOv2 person) {
-
-        logger.info("Creating one Person V2!");
-        var entity = parseObject(person, Person.class);
-
-        return converter.convertEntityToDTO(repository.save(entity));
     }
 
     public PersonDTO update(PersonDTO person) {
