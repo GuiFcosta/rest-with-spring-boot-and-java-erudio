@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.com.GuiFcosta.data.dto.v1.PersonDTO;
-import pt.com.GuiFcosta.data.dto.v2.PersonDTOv2;
 import pt.com.GuiFcosta.service.PersonServices;
 
 import java.util.List;
